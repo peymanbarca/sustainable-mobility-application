@@ -1,0 +1,13 @@
+
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5420/app_db?createDatabaseIfNotExist=true
+        username: app_db_user
+        password: app_pwd
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+security:
+    key: somerandomkeywhichislongenoughtoalignwiththejwtspecification
