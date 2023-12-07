@@ -13,8 +13,23 @@ data class LoginResponseDto(
     val token: String,
 )
 
-data class CompanyProfileModel(
+data class CompanyProfileResponseDto(
     val companyId: Long?,
     val companyName: String?,
     val userName: String
+)
+
+data class EmployeeEmissionResponseDto(
+    val companyId: Long,
+    val companyName: String,
+    val averageWeeklyMileage: Double,
+    val vehicleType: String,
+    val averageWeeklyEmission: Double
+)
+
+data class CompanyEmissionResponseDto(
+    val companyId: Long,
+    val companyName: String,
+    val averageWeeklyMileage: Double,
+    val averageWeeklyEmission: Double
 )

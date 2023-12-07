@@ -30,12 +30,4 @@ class VehicleService(private val vehicleRepository: VehicleRepository) {
         return vehicleRepository.findByVehicleType(vehicleType).orElse(null)
     }
 
-    fun getEmissionsByVehicleType(vehicleType: String, averageWeeklyMileage: Double): Double {
-        val vehicle = vehicleRepository.findByVehicleType(vehicleType)
-            .orElseThrow { NoSuchElementException("Vehicle type not found: $vehicleType") }
-
-        return vehicle.emissionsPerMile * averageWeeklyMileage
-    }
-
-    // Other vehicle-related methods...
 }

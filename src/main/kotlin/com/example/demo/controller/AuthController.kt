@@ -6,9 +6,11 @@ import com.example.demo.dto.LoginDto
 import com.example.demo.dto.LoginResponseDto
 import com.example.demo.dto.RegisterDto
 import com.example.demo.entity.User
-import com.example.demo.service.HashService
+import com.example.demo.service.HashUtil
 import com.example.demo.service.TokenService
 import com.example.demo.service.UserService
+import io.swagger.v3.oas.annotations.Operation
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,16 +23,18 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api")
 class AuthController(
-    private val hashService: HashService,
+    private val hashUtil: HashUtil,
     private val tokenService: TokenService,
     private val userService: UserService,
 ) {
+
+    @Operation(summary = "Login for registered user")
     @PostMapping("/login")
     fun login(@RequestBody payload: LoginDto): LoginResponseDto {
         val user = userService.findByName(payload.name) ?: throw ApiException(400, "Login failed")
 
-        if (!hashService.checkBcrypt(payload.password, user.password)) {
-            throw ApiException(400, "Login failed")
+        if (!hashUtil.checkBcrypt(payload.password, user.password)) {
+            throw ApiException(HttpStatus.BAD_REQUEST.value(), "Login failed")
         }
 
         return LoginResponseDto(
@@ -38,15 +42,16 @@ class AuthController(
         )
     }
 
+    @Operation(summary = "Register new user")
     @PostMapping("/register")
     fun register(@RequestBody payload: RegisterDto): LoginResponseDto {
         if (userService.existsByName(payload.name)) {
-            throw ApiException(400, "Name already exists")
+            throw ApiException(HttpStatus.BAD_REQUEST.value(), "Name already exists")
         }
 
         val user = User (
             name = payload.name,
-            password = hashService.hashBcrypt(payload.password),
+            password = hashUtil.hashBcrypt(payload.password),
             company = null
         )
 

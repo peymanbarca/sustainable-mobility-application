@@ -1,6 +1,7 @@
 package com.example.demo.controller
 
-import com.example.demo.dto.CompanyProfileModel
+import com.example.demo.dto.CompanyEmissionResponseDto
+import com.example.demo.dto.CompanyProfileResponseDto
 import com.example.demo.service.CompanyService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -13,13 +14,20 @@ class CompanyController(private val companyService: CompanyService) {
 
     @Operation(summary = "Retrieve company profile of logged-in user", security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/my-company")
-    fun someRequest(authentication: Authentication): CompanyProfileModel {
+    fun someRequest(authentication: Authentication): CompanyProfileResponseDto {
         return companyService.myCompany(authentication)
     }
 
     @Operation(summary = "Create new company by logged-in user", security = [SecurityRequirement(name = "bearerAuth")])
     @PostMapping("/create")
-    fun createCompany(@RequestParam name: String, authentication: Authentication): CompanyProfileModel {
+    fun createCompany(@RequestParam name: String, authentication: Authentication): CompanyProfileResponseDto {
         return companyService.createCompany(authentication, name)
+    }
+
+    @Operation(summary = "Retrieve emission data for whole current company",
+        security = [SecurityRequirement(name = "bearerAuth")])
+    @GetMapping("/emission")
+    fun retrieveCompanyEmission(authentication: Authentication): CompanyEmissionResponseDto {
+        return companyService.retrieveCompanyEmission(authentication)
     }
 }

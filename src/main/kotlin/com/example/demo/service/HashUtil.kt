@@ -4,7 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
 
 @Service
-class HashService {
+class HashUtil {
 
     /**
      * checks whether the string matches the hash
