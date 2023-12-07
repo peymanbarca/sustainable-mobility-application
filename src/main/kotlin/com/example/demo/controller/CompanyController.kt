@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/company")
 class CompanyController(private val companyService: CompanyService) {
 
-    @Operation(summary = "retrieve company profile of logged-in user", security = [SecurityRequirement(name = "bearerAuth")])
+    @Operation(summary = "Retrieve company profile of logged-in user", security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/my-company")
     fun someRequest(authentication: Authentication): CompanyProfileModel {
         return companyService.myCompany(authentication)
     }
 
-    @Operation(summary = "create new company by logged-in user", security = [SecurityRequirement(name = "bearerAuth")])
+    @Operation(summary = "Create new company by logged-in user", security = [SecurityRequirement(name = "bearerAuth")])
     @PostMapping("/create")
     fun createCompany(@RequestParam name: String, authentication: Authentication): CompanyProfileModel {
         return companyService.createCompany(authentication, name)

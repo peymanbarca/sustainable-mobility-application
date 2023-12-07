@@ -15,4 +15,5 @@ import org.springframework.context.annotation.Configuration
     scheme = "bearer"
 )
 class OpenApi30Config {
+
 }

@@ -13,5 +13,9 @@ data class Employee(
     val averageWeeklyMileage: Double,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    val company: Company
+    val company: Company,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    val vehicle: Vehicle
+
 ) : Serializable

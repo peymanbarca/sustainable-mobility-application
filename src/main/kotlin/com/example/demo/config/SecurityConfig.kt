@@ -30,6 +30,7 @@ class SecurityConfig (
         http.authorizeHttpRequests()
             .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/vehicle/init-data").permitAll()
             .requestMatchers("/api/**").authenticated()
             .anyRequest().permitAll() // In case you have a frontend
 
