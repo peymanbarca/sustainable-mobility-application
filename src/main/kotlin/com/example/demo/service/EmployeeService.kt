@@ -43,15 +43,21 @@ class EmployeeService(
         deletePreviousFleeDataForCompany(currentCompany)
         employeeRepository.flush()
 
+        validateFleetData(fleetData)
+        fleetData.forEach{ entry ->
+            createEmployee(entry.employeeId!!, entry.vehicleType!!, entry.averageWeeklyMileage!!, currentCompany)
+        }
+
+    }
+
+    private fun validateFleetData(fleetData: List<FleetData>) {
         var num = 0
         fleetData.forEach{ entry ->
             num ++
-            val employeeId = entry.employeeId ?: throw ApiException(400,"Error in employeeId in line $num")
-            val vehicleType = entry.vehicleType ?: throw ApiException(400,"Error in vehicleType in line $num")
-            val averageWeeklyMileage = entry.averageWeeklyMileage ?:
-            throw ApiException(400,"Error in averageWeeklyMileage in line $num")
-            createEmployee(employeeId, vehicleType, averageWeeklyMileage, currentCompany)
-
+            entry.employeeId ?: throw ApiException(400,"Error in employeeId in line $num")
+            entry.vehicleType ?: throw ApiException(400,"Error in vehicleType in line $num")
+            entry.averageWeeklyMileage ?:
+                throw ApiException(400,"Error in averageWeeklyMileage in line $num")
         }
 
     }

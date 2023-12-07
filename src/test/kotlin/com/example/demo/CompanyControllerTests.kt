@@ -39,7 +39,7 @@ class CompanyControllerTests
 
         val user = userRepository.findByName(AuthUtil.testUserName)
         if (user != null) {
-            // delete previous records for the test user
+            // todo: delete previous records for the test user (such as its employees and company)
             userRepository.delete(user)
         }
 
