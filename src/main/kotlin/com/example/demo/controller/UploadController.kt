@@ -36,20 +36,7 @@ class UploadController(private val employeeService: EmployeeService,
 
         val importedEntries = uploadService.uploadCsvFile(file)
 
-        // delete previous fleet data of company
-        employeeService.deletePreviousFleeDataForCompany(currentCompany)
-
-        var num = 0
-        importedEntries.forEach{ entry ->
-            num ++
-            val employeeId = entry.employeeId ?: throw ApiException(400,"Error in employeeId in line $num")
-            val vehicleType = entry.vehicleType ?: throw ApiException(400,"Error in vehicleType in line $num")
-            val averageWeeklyMileage = entry.averageWeeklyMileage ?:
-                throw ApiException(400,"Error in averageWeeklyMileage in line $num")
-            employeeService.createEmployee(employeeId, vehicleType, averageWeeklyMileage, currentCompany)
-
-        }
-
+       employeeService.createCompanyFleetData(fleetData =  importedEntries, currentCompany = currentCompany)
 
         return ResponseEntity.ok(importedEntries)
 

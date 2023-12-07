@@ -27,7 +27,7 @@ class VehicleService(private val vehicleRepository: VehicleRepository) {
     }
 
     fun getVehicleByVehicleType(vehicleType: String): Vehicle? {
-        return vehicleRepository.findByVehicleType(vehicleType).orElse(null)
+        return vehicleRepository.findByVehicleType(vehicleType)
     }
 
 }

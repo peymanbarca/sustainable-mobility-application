@@ -6,7 +6,7 @@ import com.example.demo.dto.LoginDto
 import com.example.demo.dto.LoginResponseDto
 import com.example.demo.dto.RegisterDto
 import com.example.demo.entity.User
-import com.example.demo.service.HashUtil
+import com.example.demo.service.util.HashUtil
 import com.example.demo.service.TokenService
 import com.example.demo.service.UserService
 import io.swagger.v3.oas.annotations.Operation

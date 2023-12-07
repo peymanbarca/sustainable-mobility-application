@@ -1,4 +1,4 @@
-package com.example.demo.service
+package com.example.demo.service.util
 
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service

@@ -19,9 +19,9 @@ class EmployeeControllerTests(@Autowired private val userRepository: UserReposit
     @Test
     fun testEmployeeEmissionInsideACompany() {
 
-        val user = userRepository.findByName("string")
+        val user = userRepository.findByName(AuthUtil.testUserName)
         if (user?.company != null) {
-            val token = authUtil.login(user.name, "string")
+            val token = authUtil.login(user.name, AuthUtil.testUserPassword)
             val requestHeaders = HttpHeaders()
             requestHeaders["Authorization"] = "Bearer $token"
 

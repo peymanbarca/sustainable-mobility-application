@@ -2,6 +2,7 @@ package com.example.demo.service
 
 import com.example.demo.dto.ApiException
 import com.example.demo.dto.EmployeeEmissionResponseDto
+import com.example.demo.dto.FleetData
 import com.example.demo.entity.Company
 import com.example.demo.entity.Employee
 import com.example.demo.repository.EmployeeRepository
@@ -32,6 +33,27 @@ class EmployeeService(
         val employee = Employee(employeeId = employeeId, averageWeeklyMileage = averageWeeklyMileage,
             company = currentCompany, vehicle = vehicle)
         return employeeRepository.save(employee)
+    }
+
+    fun createCompanyFleetData(fleetData: List<FleetData>, currentCompany: Company) {
+
+
+
+        // delete previous fleet data of company
+        deletePreviousFleeDataForCompany(currentCompany)
+        employeeRepository.flush()
+
+        var num = 0
+        fleetData.forEach{ entry ->
+            num ++
+            val employeeId = entry.employeeId ?: throw ApiException(400,"Error in employeeId in line $num")
+            val vehicleType = entry.vehicleType ?: throw ApiException(400,"Error in vehicleType in line $num")
+            val averageWeeklyMileage = entry.averageWeeklyMileage ?:
+            throw ApiException(400,"Error in averageWeeklyMileage in line $num")
+            createEmployee(employeeId, vehicleType, averageWeeklyMileage, currentCompany)
+
+        }
+
     }
 
     // todo: calculate total emission data based on a date range (by dividing the date range to weeks)

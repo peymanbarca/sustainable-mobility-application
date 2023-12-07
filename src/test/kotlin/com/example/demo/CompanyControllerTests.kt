@@ -1,11 +1,16 @@
 package com.example.demo
 
 import com.example.demo.dto.CompanyProfileResponseDto
+import com.example.demo.dto.FleetData
 import com.example.demo.dto.LoginResponseDto
 import com.example.demo.dto.RegisterDto
 import com.example.demo.repository.EmployeeRepository
 import com.example.demo.repository.UserRepository
 import com.example.demo.service.CompanyService
+import com.example.demo.service.EmployeeService
+import com.example.demo.service.UploadService
+import com.example.demo.service.VehicleService
+import org.hibernate.internal.util.collections.CollectionHelper.listOf
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -13,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.*
+import org.springframework.mock.web.MockMultipartFile
 import org.springframework.util.LinkedMultiValueMap
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -22,14 +28,23 @@ class CompanyControllerTests
     @Autowired private val userRepository: UserRepository,
     @Autowired private val employeeRepository: EmployeeRepository,
     @Autowired private val companyService: CompanyService,
+    @Autowired private val uploadService: UploadService,
+    @Autowired private val employeeService: EmployeeService,
+    @Autowired private val vehicleService: VehicleService,
     @Autowired private val authUtil: AuthUtil) {
 
     @Test
     fun testCreateCompany() {
 
-        // register new user
-        val randomString = generateRandomString(10)
-        val registerDto = RegisterDto("testUser_$randomString", "testPassword")
+
+        val user = userRepository.findByName(AuthUtil.testUserName)
+        if (user != null) {
+            // delete previous records for the test user
+            userRepository.delete(user)
+        }
+
+        // register new test user
+        val registerDto = RegisterDto(AuthUtil.testUserName, AuthUtil.testUserPassword)
         val responseEntity1: ResponseEntity<LoginResponseDto> = restTemplate.postForEntity(
             "/api/register",
             registerDto,
@@ -42,7 +57,7 @@ class CompanyControllerTests
 
 
         // login with created user, and create a new company
-        val token = authUtil.login("testUser_$randomString", "testPassword")
+        val token = authUtil.login(AuthUtil.testUserName, AuthUtil.testUserPassword)
         val requestHeaders = HttpHeaders()
         requestHeaders["Authorization"] = "Bearer $token"
 
@@ -62,10 +77,36 @@ class CompanyControllerTests
     }
 
 
+
+
+    @Test
+    fun testUploadCompanyFleetData() {
+
+        // initialize all vehicle data in database
+        vehicleService.initData()
+
+        val fileContent = "employeeId,vehicleType,averageWeeklyMileage\nsdwx,BMW,100\ncwds,BENZ,150"
+        val filePart = MockMultipartFile("file", "test.csv", "text/csv", fileContent.toByteArray())
+
+        val expectedImportedEntries = listOf(
+            FleetData(employeeId = "sdwx", vehicleType = "BMW", averageWeeklyMileage = 100.0),
+            FleetData(employeeId = "cwds", vehicleType = "BENZ", averageWeeklyMileage = 150.0)
+        )
+
+        val user = userRepository.findByName(AuthUtil.testUserName)
+        if (user?.company != null) {
+            val fleetData = uploadService.uploadCsvFile(filePart)
+            employeeService.createCompanyFleetData(fleetData =  fleetData, currentCompany = user.company!!)
+
+            assertEquals(expectedImportedEntries, fleetData)
+        }
+
+    }
+
     @Test
     fun testRetrieveCompanyEmission() {
 
-        val user = userRepository.findByName("string")
+        val user = userRepository.findByName(AuthUtil.testUserName)
         if (user?.company != null) {
 
             val emissionData = companyService.retrieveCompanyEmission(user.company!!)
@@ -82,10 +123,4 @@ class CompanyControllerTests
         }
     }
 
-
-    private fun generateRandomString(length: Int): String {
-        val allowedChars = ('a'..'z') + ('A'..'Z') + ('0'..'9')
-        return (1..length).map { allowedChars.random() }
-            .joinToString("")
-    }
 }

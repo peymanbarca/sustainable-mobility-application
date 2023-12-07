@@ -24,3 +24,14 @@
 
 ### Build the docker image
     docker build -t mobility-management-service:staging .
+
+
+# Suggestion for improvement
+
+- Emission calculation based on date range
+  - calculate total emission data (for employee or whole company) based on a date range (by dividing the date range to weeks)
+
+- Test implementation for error scenarios 
+  - Not Authorized in secured endpoints
+  - Corrupt CSV data upload
+  - Wrong username/password in login
