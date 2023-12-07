@@ -43,10 +43,8 @@ class CompanyService(
             userName = currentUser.name)
     }
 
-    fun retrieveCompanyEmission(authentication: Authentication): CompanyEmissionResponseDto {
-        val currentUser = authentication.principal as User
-        val currentCompany = currentUser.company ?: throw ApiException(HttpStatus.BAD_REQUEST.value(),
-            "You don't have any company yet.")
+    fun retrieveCompanyEmission(currentCompany: Company): CompanyEmissionResponseDto {
+
 
         val values = employeeService.retrieveCompanyEmission(company = currentCompany)
         if (values.size == 1)

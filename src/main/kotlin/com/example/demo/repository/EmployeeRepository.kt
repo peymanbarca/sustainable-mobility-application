@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query
 
 interface EmployeeRepository : JpaRepository<Employee, Long> {
 
+    fun findAllByCompany(company: Company): List<Employee>
     fun findOneByEmployeeIdAndCompany(employee: String, company: Company): Employee?
     fun deleteAllByCompany(company: Company)
 

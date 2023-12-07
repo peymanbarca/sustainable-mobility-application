@@ -1,10 +1,13 @@
 package com.example.demo.controller
 
+import com.example.demo.dto.ApiException
 import com.example.demo.dto.CompanyEmissionResponseDto
 import com.example.demo.dto.CompanyProfileResponseDto
+import com.example.demo.entity.User
 import com.example.demo.service.CompanyService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import org.springframework.http.HttpStatus
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
@@ -28,6 +31,13 @@ class CompanyController(private val companyService: CompanyService) {
         security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/emission")
     fun retrieveCompanyEmission(authentication: Authentication): CompanyEmissionResponseDto {
-        return companyService.retrieveCompanyEmission(authentication)
+        val currentUser = authentication.principal as User
+        val currentCompany = currentUser.company ?: throw ApiException(
+            HttpStatus.BAD_REQUEST.value(), "You don't have any company yet.")
+        return companyService.retrieveCompanyEmission(currentCompany)
     }
+
+    // todo: consider implementation of API for register new user for a company
+    //  (to support multi-user possible for user to company link)
+
 }

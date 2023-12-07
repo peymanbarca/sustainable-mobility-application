@@ -3,6 +3,7 @@ import jakarta.persistence.*
 import java.io.Serializable
 
 @Entity
+@Table(uniqueConstraints = [UniqueConstraint(columnNames = ["employeeId", "company_id"])])
 data class Employee(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +14,7 @@ data class Employee(
     val averageWeeklyMileage: Double,
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
     val company: Company,
 
     @ManyToOne(fetch = FetchType.LAZY)

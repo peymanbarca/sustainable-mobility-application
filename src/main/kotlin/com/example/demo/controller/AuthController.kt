@@ -61,4 +61,5 @@ class AuthController(
             token = tokenService.createToken(savedUser),
         )
     }
+
 }

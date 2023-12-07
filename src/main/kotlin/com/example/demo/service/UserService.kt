@@ -1,27 +1,27 @@
 package com.example.demo.service
 
 import com.example.demo.entity.User
-import com.example.demo.repository.UserRepo
+import com.example.demo.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class UserService(
-    private val userRepo: UserRepo,
+    private val userRepository: UserRepository,
 ) {
     fun findById(id: Long): User? {
-        return userRepo.findByIdOrNull(id)
+        return userRepository.findByIdOrNull(id)
     }
 
     fun findByName(name: String): User? {
-        return userRepo.findByName(name)
+        return userRepository.findByName(name)
     }
 
     fun existsByName(name: String): Boolean {
-        return userRepo.existsByName(name)
+        return userRepository.existsByName(name)
     }
 
     fun save(user: User): User {
-        return userRepo.save(user)
+        return userRepository.save(user)
     }
 }
