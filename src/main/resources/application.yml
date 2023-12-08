@@ -9,5 +9,9 @@ spring:
         hibernate:
             ddl-auto: update
         show-sql: true
-security:
-    key: somerandomkeywhichislongenoughtoalignwiththejwtspecification
+
+application:
+    security:
+        secret_key: ${SECRET_KEY:Vdj@scoinwerujv$zniwndubicnoew-sc$dcknkewue}
+        token_expiration_days: 1
+

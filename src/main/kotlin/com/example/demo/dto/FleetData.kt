@@ -1,10 +1,6 @@
 package com.example.demo.dto
 
-import com.opencsv.bean.CsvBindByName
 import com.opencsv.bean.CsvBindByPosition
-import lombok.AllArgsConstructor
-import lombok.Data
-import lombok.NoArgsConstructor
 
 
 data class FleetData (

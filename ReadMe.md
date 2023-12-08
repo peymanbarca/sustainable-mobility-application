@@ -5,12 +5,12 @@
 
 ### This project implemented with Kotlin 1.9, Spring Boot 3.0.1 and maven
 
-#### This project only has a default environment. In order to start the project, first a local postgreSQL DB is needed. Run the following in order to launch a containerized local postgresql DB
+#### This project only has a default environment. In order to start the project, first a local PostgreSQL DB is needed.
+Run the following in order to launch a containerized local postgresql DB
+
     cd src/main/resources/db/ && docker-compose up -d
     
 #### After that, by running the project, Hibernate DDL is responsible for create tables.
-    
-### Services
 
 
 ### Swagger ui
@@ -28,12 +28,15 @@
 
 # Suggestion for improvement
 
+- Implementation of Refresh token mechanism
+
+
 - Emission calculation based on date range
   - calculate total emission data (for employee or whole company),
      based on a date range (by dividing the date range to weeks)
   
 
-- Consider implementation of API for register new user for a company
+- Consider implementation of API for register new user for an existed company
   (to support multi-user possible for user to company link)
 
 
@@ -44,6 +47,9 @@
   - Not Authorized in secured endpoints
   - Corrupt CSV data upload
   - Wrong username/password in login
+
+
+- Using Spring Rest Docs to automatically document the tests
 
 
 - Use an external API for emission calculations, in order to find the latest

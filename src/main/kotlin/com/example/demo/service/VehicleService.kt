@@ -3,7 +3,6 @@ package com.example.demo.service
 import com.example.demo.entity.Vehicle
 import com.example.demo.repository.VehicleRepository
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class VehicleService(private val vehicleRepository: VehicleRepository) {

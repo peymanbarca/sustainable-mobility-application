@@ -8,6 +8,7 @@ import com.nimbusds.jose.crypto.MACVerifier
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import lombok.extern.slf4j.Slf4j
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -17,10 +18,10 @@ import java.util.*
 @Slf4j
 class TokenService(
     private val userService: UserService,
+    @Value("\${application.security.secret_key}") private val secretKey: String,
+    @Value("\${application.security.token_expiration_days}") private val expirationTimeDays: Int
 ) {
 
-    private val secretKey: String = "Csjn32eucb3s8wb2S@su82njAUH!skndwjnwubu$2qbwidbq"
-    private val expirationTimeDays: Int = 1
 
     fun createToken(user: User): String {
         val jwsHeader = JWSHeader(JWSAlgorithm.HS256)

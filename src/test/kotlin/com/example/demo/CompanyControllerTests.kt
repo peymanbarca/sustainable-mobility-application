@@ -13,7 +13,10 @@ import com.example.demo.service.VehicleService
 import org.hibernate.internal.util.collections.CollectionHelper.listOf
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.MethodOrderer
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -22,6 +25,7 @@ import org.springframework.mock.web.MockMultipartFile
 import org.springframework.util.LinkedMultiValueMap
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class CompanyControllerTests
     (
     @Autowired private val restTemplate: TestRestTemplate,
@@ -34,6 +38,7 @@ class CompanyControllerTests
     @Autowired private val authUtil: AuthUtil) {
 
     @Test
+    @Order(1)
     fun testCreateCompany() {
 
 
@@ -80,6 +85,7 @@ class CompanyControllerTests
 
 
     @Test
+    @Order(2)
     fun testUploadCompanyFleetData() {
 
         // initialize all vehicle data in database
@@ -104,6 +110,7 @@ class CompanyControllerTests
     }
 
     @Test
+    @Order(3)
     fun testRetrieveCompanyEmission() {
 
         val user = userRepository.findByName(AuthUtil.testUserName)
@@ -112,7 +119,7 @@ class CompanyControllerTests
             val emissionData = companyService.retrieveCompanyEmission(user.company!!)
 
             val employees = employeeRepository.findAllByCompany(user.company!!)
-            var averageWeeklyEmissionTotalCalculated: Double = 0.0
+            var averageWeeklyEmissionTotalCalculated = 0.0
             if (!employees.isEmpty()) {
                 employees.forEach { e -> averageWeeklyEmissionTotalCalculated +=
                     e.averageWeeklyMileage * e.vehicle.emissionsPerMile
