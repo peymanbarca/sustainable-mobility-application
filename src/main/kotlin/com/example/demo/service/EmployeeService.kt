@@ -3,6 +3,7 @@ package com.example.demo.service
 import com.example.demo.dto.ApiException
 import com.example.demo.dto.EmployeeEmissionResponseDto
 import com.example.demo.dto.FleetData
+import com.example.demo.dto.HighlyUsedEmployeeDto
 import com.example.demo.entity.Company
 import com.example.demo.entity.Employee
 import com.example.demo.repository.EmployeeRepository
@@ -16,6 +17,10 @@ class EmployeeService(
     private val employeeRepository: EmployeeRepository,
     private val vehicleService: VehicleService) {
 
+
+    fun retrieveCompanySize(company: Company): Int {
+        return employeeRepository.countAllByCompany(company)
+    }
 
     fun deletePreviousFleeDataForCompany(currentCompany: Company) {
         employeeRepository.deleteAllByCompany(currentCompany)
@@ -76,6 +81,25 @@ class EmployeeService(
 
     fun retrieveCompanyEmission(company: Company): List<List<Double>> {
         return employeeRepository.retrieveCompanyEmissionByAllEmployees(company)
+    }
+
+    fun retrieveCompanyHighlyUsedEmployees(company: Company): List<HighlyUsedEmployeeDto> {
+        val result:MutableList<HighlyUsedEmployeeDto> = mutableListOf<HighlyUsedEmployeeDto>()
+        val companyAvgEmission = employeeRepository.calculateCompanyAvgEmission(company)
+        val employeeIds = employeeRepository.retrieveCompanyHighlyUsedEmployees(company, companyAvgEmission)
+        employeeIds.forEach { id ->
+                val employee = employeeRepository.findOneByEmployeeIdAndCompany(id, company)
+                if (employee != null) {
+                    result.add(HighlyUsedEmployeeDto(employeeId = id,
+                        averageWeeklyMileage = employee.averageWeeklyMileage,
+                        vehicleType = employee.vehicle.vehicleType,
+                        vehicleEmissionPerMile= employee.vehicle.emissionsPerMile,
+                        averageWeeklyEmission = employee.averageWeeklyMileage * employee.vehicle.emissionsPerMile)
+                    )
+                }
+
+        }
+        return result
     }
 
 }

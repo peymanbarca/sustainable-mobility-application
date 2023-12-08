@@ -3,6 +3,7 @@ package com.example.demo.service
 import com.example.demo.dto.ApiException
 import com.example.demo.dto.CompanyEmissionResponseDto
 import com.example.demo.dto.CompanyProfileResponseDto
+import com.example.demo.dto.HighlyUsedEmployeeDto
 import com.example.demo.entity.Company
 import com.example.demo.entity.User
 import com.example.demo.repository.CompanyRepository
@@ -47,11 +48,19 @@ class CompanyService(
 
 
         val values = employeeService.retrieveCompanyEmission(company = currentCompany)
+        val companySize = employeeService.retrieveCompanySize(company = currentCompany)
         if (values.size == 1)
             return CompanyEmissionResponseDto(companyId=currentCompany.id!!, companyName = currentCompany.name,
-                averageWeeklyMileage = values[0][0], averageWeeklyEmission = values[0][1]
+                totalAverageWeeklyMileage = values[0][0], totalAverageWeeklyEmission = values[0][1],
+                totalEmployees = companySize
             )
         throw ApiException(HttpStatus.BAD_REQUEST.value(),
             "There is not data for current company")
+    }
+
+    fun retrieveCompanyEmissionSuggestion(currentCompany: Company): List<HighlyUsedEmployeeDto> {
+
+        return employeeService.retrieveCompanyHighlyUsedEmployees(company = currentCompany)
+
     }
 }

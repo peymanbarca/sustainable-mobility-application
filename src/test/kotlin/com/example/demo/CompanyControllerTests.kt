@@ -119,7 +119,7 @@ class CompanyControllerTests
                 }
             }
 
-            assertEquals(averageWeeklyEmissionTotalCalculated, emissionData.averageWeeklyEmission)
+            assertEquals(averageWeeklyEmissionTotalCalculated, emissionData.totalAverageWeeklyEmission)
         }
     }
 

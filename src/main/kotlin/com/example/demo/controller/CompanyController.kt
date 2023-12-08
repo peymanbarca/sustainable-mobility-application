@@ -3,6 +3,7 @@ package com.example.demo.controller
 import com.example.demo.dto.ApiException
 import com.example.demo.dto.CompanyEmissionResponseDto
 import com.example.demo.dto.CompanyProfileResponseDto
+import com.example.demo.dto.HighlyUsedEmployeeDto
 import com.example.demo.entity.User
 import com.example.demo.service.CompanyService
 import io.swagger.v3.oas.annotations.Operation
@@ -27,6 +28,7 @@ class CompanyController(private val companyService: CompanyService) {
         return companyService.createCompany(authentication, name)
     }
 
+
     @Operation(summary = "Retrieve emission data for whole current company",
         security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/emission")
@@ -37,7 +39,15 @@ class CompanyController(private val companyService: CompanyService) {
         return companyService.retrieveCompanyEmission(currentCompany)
     }
 
-    // todo: consider implementation of API for register new user for a company
-    //  (to support multi-user possible for user to company link)
+    @Operation(summary = "Retrieve suggestion for making efficient of the emission for the current company",
+        security = [SecurityRequirement(name = "bearerAuth")])
+    @GetMapping("/emission-suggestion")
+    fun retrieveCompanyEmissionSuggestion(authentication: Authentication): List<HighlyUsedEmployeeDto> {
+        val currentUser = authentication.principal as User
+        val currentCompany = currentUser.company ?: throw ApiException(
+            HttpStatus.BAD_REQUEST.value(), "You don't have any company yet.")
+        return companyService.retrieveCompanyEmissionSuggestion(currentCompany)
+    }
+
 
 }

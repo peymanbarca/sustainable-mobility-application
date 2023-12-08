@@ -30,6 +30,16 @@ data class EmployeeEmissionResponseDto(
 data class CompanyEmissionResponseDto(
     val companyId: Long,
     val companyName: String,
+    val totalAverageWeeklyMileage: Double,
+    val totalAverageWeeklyEmission: Double,
+    val totalEmployees: Int
+)
+
+
+data class HighlyUsedEmployeeDto(
+    val employeeId: String,
     val averageWeeklyMileage: Double,
+    val vehicleType: String,
+    val vehicleEmissionPerMile: Double,
     val averageWeeklyEmission: Double
 )

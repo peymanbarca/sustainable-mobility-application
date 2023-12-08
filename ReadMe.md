@@ -29,9 +29,27 @@
 # Suggestion for improvement
 
 - Emission calculation based on date range
-  - calculate total emission data (for employee or whole company) based on a date range (by dividing the date range to weeks)
+  - calculate total emission data (for employee or whole company),
+     based on a date range (by dividing the date range to weeks)
+  
+
+- Consider implementation of API for register new user for a company
+  (to support multi-user possible for user to company link)
+
+
+- Error response messages using i18n
+
 
 - Test implementation for error scenarios 
   - Not Authorized in secured endpoints
   - Corrupt CSV data upload
   - Wrong username/password in login
+
+
+- Use an external API for emission calculations, in order to find the latest
+    emission rate for vehicles
+
+
+- Average weekly mileage for employees should be updated, based on a tracking app,
+    and it can be calculated and updated daily (in a scheduled job), or updates near real time
+    by consuming events from the tracking app (For example by using Kafka)
