@@ -24,6 +24,8 @@ class UploadController(private val employeeService: EmployeeService,
     ) {
 
     @Operation(summary = "Upload company's fleet data (as CSV) by logged-in user",
+        description = "The format is 3 column: (Employee Id, Vehicle Type, Average Weekly Mileage), " +
+                "which all columns should be filled",
         security = [SecurityRequirement(name = "bearerAuth")])
     @PostMapping("/fleet",consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun uploadCompanyFleetData(@RequestPart("file") file: MultipartFile, authentication: Authentication)

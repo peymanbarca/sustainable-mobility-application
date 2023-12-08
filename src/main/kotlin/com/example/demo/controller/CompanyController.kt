@@ -39,7 +39,9 @@ class CompanyController(private val companyService: CompanyService) {
         return companyService.retrieveCompanyEmission(currentCompany)
     }
 
-    @Operation(summary = "Retrieve suggestion for making efficient of the emission for the current company",
+    @Operation(summary = "Retrieve suggestion for making emission efficient for the current company",
+        description = "Recognize highly used employees (more than average of the company)," +
+                " to suggest replacement their vehicles by electric alternatives",
         security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/emission-suggestion")
     fun retrieveCompanyEmissionSuggestion(authentication: Authentication): List<HighlyUsedEmployeeDto> {
