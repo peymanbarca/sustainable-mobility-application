@@ -1,7 +1,6 @@
 package com.example.demo
 
 import com.example.demo.dto.LoginDto
-import com.example.demo.dto.LoginResponseDto
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
