@@ -1,9 +1,6 @@
 package com.example.demo
 
-import com.example.demo.dto.CompanyProfileResponseDto
-import com.example.demo.dto.FleetData
-import com.example.demo.dto.LoginResponseDto
-import com.example.demo.dto.RegisterDto
+import com.example.demo.dto.*
 import com.example.demo.repository.EmployeeRepository
 import com.example.demo.repository.UserRepository
 import com.example.demo.service.CompanyService
@@ -11,12 +8,9 @@ import com.example.demo.service.EmployeeService
 import com.example.demo.service.UploadService
 import com.example.demo.service.VehicleService
 import org.hibernate.internal.util.collections.CollectionHelper.listOf
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.MethodOrderer
-import org.junit.jupiter.api.Order
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -128,6 +122,21 @@ class CompanyControllerTests
 
             assertEquals(averageWeeklyEmissionTotalCalculated, emissionData.totalAverageWeeklyEmission)
         }
+    }
+
+    @Test
+    @Order(4)
+    fun testRetrieveCompanyEmissionWithoutAuth() {
+
+        val requestEntity = HttpEntity<Any>(HttpHeaders())
+        val responseEntity: ResponseEntity<EmployeeEmissionResponseDto> =
+            restTemplate.exchange("/api/company/emission",
+                HttpMethod.GET,
+                requestEntity,
+                EmployeeEmissionResponseDto::class.java)
+
+
+        Assertions.assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.statusCode)
     }
 
 }

@@ -51,10 +51,10 @@ Run the following in order to launch a containerized local postgresql DB
 - During test implementations, we can also use mocking, to mock the current user,
   instead of really login with a constant test user.
 - We should also perform test implementation for error scenarios, such as: 
-  - Not Authorized in secured endpoints
   - Corrupt CSV data upload
-  - Wrong username/password in login
 
+
+- Using test containers for running tests, (a complete new postgresql db)
 
 - Using Spring Rest Docs to automatically document the tests
 
