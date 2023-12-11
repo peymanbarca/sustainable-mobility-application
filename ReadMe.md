@@ -31,7 +31,8 @@ Run the following in order to launch a containerized local postgresql DB
 - Implementation of Refresh token mechanism
 
 
-- Also in our upload service, we can allow for persist an employee, which the data for its vehicle type,
+- We can retrieve vehicle types and their emission rates from user in our upload service.
+ or we can allow for persist an employee, which the data for its vehicle type,
     doesn't exist in our system. But during emission calculation, we can't compute for that specific employee,
     and we should first retrieve its vehicle emission data (emission per mile), from external resources.
 
