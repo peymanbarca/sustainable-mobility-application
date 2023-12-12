@@ -87,6 +87,7 @@ class EmployeeService(
         val result:MutableList<HighlyUsedEmployeeDto> = mutableListOf<HighlyUsedEmployeeDto>()
         val companyAvgEmission = employeeRepository.calculateCompanyAvgEmission(company)
         val employeeIds = employeeRepository.retrieveCompanyHighlyUsedEmployees(company, companyAvgEmission)
+        val alternativeVehicle = vehicleService.getLowestEmissionVehicle()
         employeeIds.forEach { id ->
                 val employee = employeeRepository.findOneByEmployeeIdAndCompany(id, company)
                 if (employee != null) {
@@ -94,8 +95,10 @@ class EmployeeService(
                         averageWeeklyMileage = employee.averageWeeklyMileage,
                         vehicleType = employee.vehicle.vehicleType,
                         vehicleEmissionPerMile= employee.vehicle.emissionsPerMile,
-                        averageWeeklyEmission = employee.averageWeeklyMileage * employee.vehicle.emissionsPerMile)
-                    )
+                        averageWeeklyEmission = employee.averageWeeklyMileage * employee.vehicle.emissionsPerMile,
+                        possibleEmissionReduction = employee.averageWeeklyMileage
+                                * (employee.vehicle.emissionsPerMile - alternativeVehicle.emissionsPerMile)
+                    ))
                 }
 
         }

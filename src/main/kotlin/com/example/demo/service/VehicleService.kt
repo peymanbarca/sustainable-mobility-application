@@ -29,4 +29,8 @@ class VehicleService(private val vehicleRepository: VehicleRepository) {
         return vehicleRepository.findByVehicleType(vehicleType)
     }
 
+    fun getLowestEmissionVehicle(): Vehicle  {
+        return vehicleRepository.findFirstByOrderByEmissionsPerMile()
+    }
+
 }

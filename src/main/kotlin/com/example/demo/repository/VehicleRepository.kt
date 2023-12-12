@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface VehicleRepository : JpaRepository<Vehicle, Long> {
     fun findByVehicleType(type: String): Vehicle?
+    fun findFirstByOrderByEmissionsPerMile(): Vehicle
 }

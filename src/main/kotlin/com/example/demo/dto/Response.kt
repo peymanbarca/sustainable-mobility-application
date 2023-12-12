@@ -41,5 +41,6 @@ data class HighlyUsedEmployeeDto(
     val averageWeeklyMileage: Double,
     val vehicleType: String,
     val vehicleEmissionPerMile: Double,
-    val averageWeeklyEmission: Double
+    val averageWeeklyEmission: Double,
+    val possibleEmissionReduction: Double
 )
